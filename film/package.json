@@ -1,0 +1,22 @@
+{
+  "name": "oss-showcase-film",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "score": "node scripts/score.mjs",
+    "render": "node scripts/render.mjs",
+    "snap": "node scripts/snap.mjs"
+  },
+  "dependencies": {
+    "postprocessing": "^6.39.6",
+    "three": "^0.187.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.187.0",
+    "puppeteer-core": "^25.16.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.6"
+  }
+}

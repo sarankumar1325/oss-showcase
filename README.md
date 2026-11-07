@@ -1,15 +1,53 @@
-# Open-source, live
+<div align="center">
 
-**Live:** [sarankumar1325.github.io/oss-showcase](https://sarankumar1325.github.io/oss-showcase/) · try anyone's with [`?u=yyx990803`](https://sarankumar1325.github.io/oss-showcase/?u=yyx990803)
+# Open-source, live.
 
-A cinematic showcase of someone's merged pull requests to other people's open-source projects. It loads live from GitHub, has an orbit of every repository, rhythm charts in 2D and 3D, and a searchable archive.
+**Your merged pull requests, turned into a cinematic, live portfolio.**<br>
+Type any GitHub username and watch their open-source work come alive. Or fork it and make it yours.
 
-It works for anyone, in two ways:
+<a href="docs/media/oss-showcase-film.mp4"><img src="docs/media/film.gif" alt="The launch film: light streaks for every merged PR, a 3D skyline of merge days, and a galaxy of repositories" width="100%"></a>
 
-- **Fork it** and it becomes your portfolio, deployed to GitHub Pages and refreshed automatically.
-- **Open anyone's** on any deployed copy with `?u=<username>`, for example `…/?u=octocat`.
+**[▶ Watch the 30-second film, with sound](docs/media/oss-showcase-film.mp4)**
 
-Everything shown is public GitHub data, so **no token is required**.
+[![Live site](https://img.shields.io/badge/live-sarankumar1325.github.io%2Foss--showcase-5fd49b?style=flat-square&labelColor=0b0d14)](https://sarankumar1325.github.io/oss-showcase/)
+[![Deploy](https://img.shields.io/github/actions/workflow/status/sarankumar1325/oss-showcase/deploy.yml?branch=main&style=flat-square&label=deploy&labelColor=0b0d14)](https://github.com/sarankumar1325/oss-showcase/actions/workflows/deploy.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-a3a9b8?style=flat-square&labelColor=0b0d14)](LICENSE)
+![No token needed](https://img.shields.io/badge/token-not%20needed-a3a9b8?style=flat-square&labelColor=0b0d14)
+
+**[Live demo](https://sarankumar1325.github.io/oss-showcase/)** · **[See yours](#see-yours-in-10-seconds)** · **[Make it yours](#make-it-yours-fork-in-3-steps)**
+
+</div>
+
+---
+
+## See yours in 10 seconds
+
+Open this link with your GitHub username at the end:
+
+```
+https://sarankumar1325.github.io/oss-showcase/?u=YOUR_GITHUB_USERNAME
+```
+
+Or press **See yours** in the site's top bar and type it in. No sign-in, no install, no token. Your whole history loads live from GitHub in your browser.
+
+## What you get
+
+- **An opening shot.** Every merged PR becomes a streak of light, landing on one point in the order it merged.
+- **Orbit.** Every repository you've contributed to is a star. Bigger means more merges.
+- **Rhythm.** Daily merges, a contribution calendar and the hours you ship, in 2D. **Flip any chart to 3D** and orbit it.
+- **Live feed.** It checks GitHub every minute, so a new merge ripples across the page while you watch.
+- **Archive.** Every merged PR with search, filters, sorting and pagination, all in shareable URLs.
+- **Made to share.** A link-preview card generated for your profile, plus one-click share.
+
+Only **public**, **merged** pull requests into repositories **you don't own** count. Nothing is invented.
+
+## Three ways to use it
+
+| | How | Token? |
+| --- | --- | --- |
+| **See anyone's** | `?u=username` on the live site | Not needed |
+| **Make it yours** | Fork, edit one file, deploy to GitHub Pages | Not needed (Actions has its own) |
+| **Go faster** | Paste a fine-grained token in the site's *Optional token* sheet | Optional, read-only |
 
 ---
 
@@ -45,15 +83,15 @@ Until the first snapshot is generated, the site loads your data live in the brow
 
 ## Tokens, honestly
 
-You don't need one. A token only raises GitHub's rate limits:
+You don't need one. Everything shown is public. A token only raises GitHub's rate limits:
 
 | | No token | With a token |
 | --- | --- | --- |
 | Searches | 10 / minute | 30 / minute |
 | Other requests | 60 / hour | 5,000 / hour |
 
+- **Browsing with `?u=`:** for big histories, paste your own token in the site's *Optional token* sheet. Create a **fine-grained** personal access token with **public repositories (read-only)** access and **no permissions** selected; the sheet links to a prefilled page. It stays in your browser (session-only unless you tick "remember") and is sent only to `api.github.com`.
 - **Deploying:** the workflow uses the built-in Actions token. Never put a token in a `VITE_*` variable, because Vite bakes those into the public JavaScript.
-- **Browsing with `?u=`:** visitors can optionally paste their own token in the site's *Optional token* sheet. Use a **fine-grained** token with **public repositories** access and **no permissions** selected; the sheet links to a prefilled page. It is stored only in that browser (session-only unless "remember" is ticked) and sent only to `api.github.com`.
 - **Locally:** `GITHUB_TOKEN=… bun run snapshot` is faster, but `bun run snapshot` works without one.
 
 ---
@@ -96,6 +134,17 @@ bun run preview    # serve the production build
 
 Nothing is invented: if GitHub is unreachable or rate-limited, what is on screen simply stays.
 
+## The film is code too
+
+The launch film at the top is not edited footage. It's a hand-written three.js scene in [`film/`](film/), with real data, bloom, film grain and a 2.39:1 letterbox. Every frame is rendered on the GPU and streamed into ffmpeg, and the score is synthesized from scratch in Node.
+
+```bash
+cd film && bun install
+node scripts/score.mjs     # synthesize the score
+node scripts/render.mjs    # render 900 frames → out/oss-showcase-film.mp4
+bunx vite                  # live preview: space to pause, ←/→ to scrub, ?t=12.5 to jump
+```
+
 ## Structure
 
 - `portfolio.config.ts`: the one file a fork edits
@@ -105,10 +154,10 @@ Nothing is invented: if GitHub is unreachable or rate-limited, what is on screen
 - `src/lib/profile.ts`, `token.ts`, `cache.ts`: who is shown, the optional token, the browser cache
 - `src/components/Loader.tsx`, `TokenSheet.tsx`, `ViewAnother.tsx`: live loading, the token sheet, the username box
 - `src/components/*`: intro, orbit, rhythm (2D/3D), feed, ledger, archive, cursor and transitions
+- `film/`: the launch film (three.js, GPU render, synthesized score)
 
 Respects `prefers-reduced-motion`.
 
 ## License
 
 MIT. Fork it, make it yours.
-

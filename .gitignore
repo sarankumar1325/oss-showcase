@@ -9,3 +9,11 @@ dist
 
 # the original single-file version, kept locally only
 saran-oss-showcase.html
+
+# launch video (Remotion): sources are fine to commit, not installs or renders
+video/node_modules
+video/out
+film/node_modules
+film/out
+film/scripts/_dbg.mjs
+/oss-showcase-film.mp4

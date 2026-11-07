@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import type { LiveEvent, PR } from '../types'
 import { SECTIONS } from './Nav'
 import { EASE, Icon } from './ui'
+import { OWNER, useProfile, validHandle, viewerHref } from '../lib/profile'
 
 /* ---------------------------------------------------------------- toasts */
 
@@ -89,6 +90,7 @@ export function CommandPalette({ open, onClose, prs, onGo, onSearchArchive }: { 
   const [q, setQ] = useState('')
   const [sel, setSel] = useState(0)
   const input = useRef<HTMLInputElement>(null)
+  const profile = useProfile()
 
   useEffect(() => {
     if (open) {
@@ -123,6 +125,12 @@ export function CommandPalette({ open, onClose, prs, onGo, onSearchArchive }: { 
     const all = needle
       ? [
           ...found,
+          ...(() => {
+            const h = q.trim().replace(/^@/, '')
+            return OWNER.allowViewer && validHandle(h) && h.toLowerCase() !== profile.handle.toLowerCase()
+              ? [{ kind: 'user' as const, key: 'u-' + h, title: `See @${h}'s open-source work`, sub: 'GitHub user', run: () => (location.href = viewerHref(h)) }]
+              : []
+          })(),
           {
             kind: 'jump' as const,
             key: 'j-all',
@@ -134,7 +142,7 @@ export function CommandPalette({ open, onClose, prs, onGo, onSearchArchive }: { 
         ]
       : jumps
     return all
-  }, [q, prs, onGo, onSearchArchive])
+  }, [q, prs, onGo, onSearchArchive, profile.handle])
 
   const choose = (i: number) => {
     const it = items[i]
@@ -180,7 +188,7 @@ export function CommandPalette({ open, onClose, prs, onGo, onSearchArchive }: { 
                   setQ(e.target.value)
                   setSel(0)
                 }}
-                placeholder="Search merged PRs, or jump to a section…"
+                placeholder="Search merged PRs, a section, or a GitHub username"
                 spellCheck={false}
                 autoComplete="off"
               />
@@ -192,7 +200,7 @@ export function CommandPalette({ open, onClose, prs, onGo, onSearchArchive }: { 
                 <li key={it.key}>
                   <button type="button" className={i === sel ? 'on' : ''} onMouseEnter={() => setSel(i)} onClick={() => choose(i)}>
                     <span className="palette-ico">
-                      <Icon name={it.kind === 'pr' ? 'merge' : 'arrow'} size={15} />
+                      <Icon name={it.kind === 'pr' ? 'merge' : it.kind === 'user' ? 'users' : 'arrow'} size={15} />
                     </span>
                     <span className="palette-t">{it.title}</span>
                     <span className="palette-s mono">{it.sub}</span>

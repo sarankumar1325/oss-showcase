@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import { OWNER, viewerHref, validHandle } from '../lib/profile'
 
 /** "See anyone's work": a username box that opens ?u=<name> on this same site. */
 export function ViewAnother({ label = 'See anyone’s open-source work' }: { label?: string }) {
+  const id = useId()
   const [v, setV] = useState('')
   const [bad, setBad] = useState(false)
   if (!OWNER.allowViewer) return null
@@ -22,7 +23,7 @@ export function ViewAnother({ label = 'See anyone’s open-source work' }: { lab
         go()
       }}
     >
-      <label className="mono" htmlFor="view-another">
+      <label className="mono" htmlFor={id}>
         {label}
       </label>
       <div className={`view-another-row ${bad ? 'bad' : ''}`}>
@@ -30,7 +31,8 @@ export function ViewAnother({ label = 'See anyone’s open-source work' }: { lab
           github.com/
         </span>
         <input
-          id="view-another"
+          id={id}
+          data-view-another
           className="mono"
           value={v}
           onChange={(e) => {

@@ -68,7 +68,7 @@ export function Cursor() {
         name = own.dataset.cursor ?? ''
       } else if (text) next = 'text'
       else if (hover) next = 'hover'
-      else if (stick) {
+      else if (stick && !stick.closest('.nav')) {
         const b = stick.getBoundingClientRect()
         if (b.width <= 420 && b.height <= 120) {
           next = 'stick'

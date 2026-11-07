@@ -76,7 +76,7 @@ export function Footer() {
   return (
     <footer className="footer">
       <div className="footer-id">
-        <Me className="nav-mark" />
+        <Me size={36} className="footer-me" />
         <p>
           {profile.name} ·{' '}
           <a href={`https://github.com/${profile.handle}`} target="_blank" rel="noopener noreferrer">

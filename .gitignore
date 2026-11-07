@@ -1,0 +1,11 @@
+node_modules
+dist
+*.local
+.DS_Store
+*.tsbuildinfo
+
+# local tooling
+.claude/
+
+# the original single-file version, kept locally only
+saran-oss-showcase.html

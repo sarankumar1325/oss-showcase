@@ -112,4 +112,3 @@ Respects `prefers-reduced-motion`.
 
 MIT. Fork it, make it yours.
 
-The visual pass followed [unslop](https://heydamir.design/unslop) by Damir Sokolovsky (@heydamir), CC BY 4.0.
